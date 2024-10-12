@@ -11,6 +11,7 @@ def PDF_norm(x):
 # Normaliza V.A. de X~N(u, o2) para Z~N(0, 1)
 def Z_score(x, u, o2): return divide( subtract( x, u ), sqrt(o2) )
 
+# reverte um valor normalizado para a V.A.
 def VA(z, u, o2): return add( u, dot( z, sqrt(o2) ) )
 
 # Função normal padrão acumulada à esquerda P(Z <= z) ou A(z)
