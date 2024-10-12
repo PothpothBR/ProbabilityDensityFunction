@@ -1,5 +1,5 @@
 from scipy.integrate import quad
-from numpy import dot, divide, power, sqrt, e, inf, subtract
+from numpy import dot, divide, power, sqrt, e, inf, subtract, add
 
 # Função de densidade de probabilidade normal Z~N(0, 1)
 def PDF_norm(x):
@@ -9,7 +9,9 @@ def PDF_norm(x):
     )
 
 # Normaliza V.A. de X~N(u, o2) para Z~N(0, 1)
-def Z_score(u, o2): return divide( subtract( 1, u ), sqrt(o2) )
+def Z_score(x, u, o2): return divide( subtract( x, u ), sqrt(o2) )
+
+def VA(z, u, o2): return add( u, dot( z, sqrt(o2) ) )
 
 # Função normal padrão acumulada à esquerda P(Z <= z) ou A(z)
 def Z_left_norm(z): return -round(quad(PDF_norm, inf, -z)[0], 4)
@@ -30,17 +32,20 @@ def Zl(z): return Z_left_norm(z)
 def Zr(z): return Z_right_norm(z)
 
 # atalho para a normalização da V.A.
-def Z(u, o2): return Z_score(u, o2)
+def Z(x, u, o2): return Z_score(x, u, o2)
+
+# atalho para reversão da normalização
+def X(z, u, o2): return VA(z, u , o2)
 
 # atalhos para a função normal padrão acumulada com V.A. não normalizada
-def Al(u, o2): return Zl(Z(u, o2))
-def Ar(u, o2): return Zr(Z(u, o2))
+def Al(x, u, o2): return round(Zl(Z(x, u, o2)), 4)
+def Ar(x, u, o2): return round(Zr(Z(x, u, o2)), 4)
 
 # desenha a tabela para a função normal padrão acumulada
 def print_Z_table(Z_norm):
     print("   ", end="")
     for Sz in range(0, 10):
-        print("    {: .1f}".format(Sz), end="")
+        print("     {}".format(Sz), end="")
     print()
 
     print("      ", end="")
@@ -57,23 +62,3 @@ def print_Z_table(Z_norm):
             print("{: .4f}".format(Z_norm(z)), end=" ")
         print()
 
-# Testando precisão usando dados conferidos como referência L_ e R_
-print("L_: 0,6179", "R_: 0,3821")
-print("L_: 0,3821", "R_: 0,6179")
-print()
-print("Lz:", Z_left_norm(0.3), "Rz:", Z_right_norm(0.3))
-print("Lz:", Z_left_norm(-0.3), "Rz:", Z_right_norm(-0.3))
-print()
-print("L2:", Z_left_norm2(0.3), "R2:", Z_right_norm2(0.3))
-print("L2:", Z_left_norm2(-0.3), "R2:", Z_right_norm2(-0.3))
-print()
-print("L3:", Z_left_norm2(0.3), "R3:", Z_right_norm2(0.3))
-print("L3:", Z_left_norm2(-0.3), "R3:", Z_right_norm2(-0.3))
-print()
-
-# Exibindo as tabelas normal padrão acumulada
-print("Left Table:")
-print_Z_table(Zl)
-print()
-print("Right Table:")
-print_Z_table(Zr)
