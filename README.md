@@ -7,17 +7,17 @@ Feito por mim (Bruno Dalagnol)
 
 #### Z-score
 ```python
-Z_score = Z(x, media, variancia)
+z = Z(x, media, variancia)
 ```
 
 #### P(X >= x)
 ```python
-probabilidade = Ar(x, media, variancia)
+pa = Ar(x, media, variancia)
 ```
 
 #### P(X <= x)
 ```python
-probabilidade = Al(x, media, variancia)
+pa = Al(x, media, variancia)
 ```
 
 ## Tabelas
